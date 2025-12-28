@@ -5,12 +5,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Search, Settings, Loader2, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Search, Settings, Loader2, Image as ImageIcon, Wand2, Check, Eye } from "lucide-react";
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
 import type { CrawlSourceFormData, ArticleSelectors, ProductSelectors, FieldConfig, ImageFieldConfig } from "../types";
 import { FieldConfigModal } from "./FieldConfigModal";
 import { ImageConfigModal } from "./ImageConfigModal";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SourceDetailTabProps {
     formData: CrawlSourceFormData;
@@ -389,9 +395,25 @@ function MultiSelectorField({
     );
 }
 
+// Interface for detected selectors
+interface DetectedSelector {
+    selector: string;
+    type: 'featured' | 'content';
+    count: number;
+    sampleImages: string[];
+    description: string;
+}
+
 export function SourceDetailTab({ formData, updateFormData }: SourceDetailTabProps) {
     const [testUrl, setTestUrl] = useState("");
     const [testingAll, setTestingAll] = useState(false);
+    const [detectingImages, setDetectingImages] = useState(false);
+    const [featuredSelectors, setFeaturedSelectors] = useState<DetectedSelector[]>([]);
+    const [contentSelectors, setContentSelectors] = useState<DetectedSelector[]>([]);
+    const [showFeaturedPopover, setShowFeaturedPopover] = useState(false);
+    const [showContentPopover, setShowContentPopover] = useState(false);
+    const [previewImages, setPreviewImages] = useState<string[]>([]);
+    const [showPreview, setShowPreview] = useState(false);
 
     const isArticle = formData.crawlType === "article";
     const articleSelectors = formData.selectors.article || {} as ArticleSelectors;
@@ -446,6 +468,66 @@ export function SourceDetailTab({ formData, updateFormData }: SourceDetailTabPro
         }, 2000);
     };
 
+    // Detect image selectors from URL
+    const detectImageSelectors = async () => {
+        if (!testUrl) {
+            toast.error("Vui lòng nhập URL test trước");
+            return;
+        }
+
+        setDetectingImages(true);
+        try {
+            const res = await fetch("/api/crawler/detect-images", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: testUrl }),
+            });
+
+            if (!res.ok) throw new Error("Failed to detect images");
+
+            const data = await res.json();
+            setFeaturedSelectors(data.featuredSelectors || []);
+            setContentSelectors(data.contentSelectors || []);
+
+            if (data.featuredSelectors?.length > 0 || data.contentSelectors?.length > 0) {
+                toast.success(`Tìm thấy ${data.featuredSelectors?.length || 0} selector ảnh đại diện, ${data.contentSelectors?.length || 0} selector ảnh nội dung`);
+            } else {
+                toast.warning("Không tìm thấy selector ảnh phù hợp");
+            }
+        } catch (error) {
+            console.error("Error detecting images:", error);
+            toast.error("Không thể phát hiện selectors ảnh");
+        } finally {
+            setDetectingImages(false);
+        }
+    };
+
+    // Apply selected selector
+    const applyFeaturedSelector = (selector: DetectedSelector) => {
+        if (isArticle) {
+            updateArticle({ featuredImage: selector.selector });
+        }
+        setShowFeaturedPopover(false);
+        toast.success(`Đã chọn: ${selector.description}`);
+    };
+
+    const applyContentSelector = (selector: DetectedSelector) => {
+        if (isArticle) {
+            const current = articleSelectors.contentImages || [];
+            if (!current.includes(selector.selector)) {
+                updateArticle({ contentImages: [...current, selector.selector] });
+            }
+        }
+        setShowContentPopover(false);
+        toast.success(`Đã thêm: ${selector.description}`);
+    };
+
+    // Preview images
+    const handlePreview = (images: string[]) => {
+        setPreviewImages(images);
+        setShowPreview(true);
+    };
+
     return (
         <div className="space-y-6">
             {/* Test URL */}
@@ -460,6 +542,18 @@ export function SourceDetailTab({ formData, updateFormData }: SourceDetailTabPro
                                 placeholder="https://example.com/bai-viet-123.html"
                             />
                         </div>
+                        <Button
+                            variant="outline"
+                            onClick={detectImageSelectors}
+                            disabled={detectingImages || !testUrl}
+                        >
+                            {detectingImages ? (
+                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                            ) : (
+                                <Wand2 className="h-4 w-4 mr-2" />
+                            )}
+                            Phát hiện ảnh
+                        </Button>
                         <Button onClick={testAllSelectors} disabled={testingAll}>
                             {testingAll ? (
                                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -471,6 +565,40 @@ export function SourceDetailTab({ formData, updateFormData }: SourceDetailTabPro
                     </div>
                 </CardContent>
             </Card>
+
+            {/* Image Preview Modal */}
+            {showPreview && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+                    onClick={() => setShowPreview(false)}
+                >
+                    <div
+                        className="bg-white rounded-lg p-4 max-w-4xl max-h-[90vh] overflow-auto"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="font-medium">Preview ảnh ({previewImages.length})</h3>
+                            <Button variant="ghost" size="sm" onClick={() => setShowPreview(false)}>
+                                ✕
+                            </Button>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {previewImages.map((img, i) => (
+                                <a key={i} href={img} target="_blank" rel="noopener noreferrer">
+                                    <img
+                                        src={img}
+                                        alt={`Preview ${i + 1}`}
+                                        className="w-full h-40 object-cover rounded border hover:opacity-80"
+                                        onError={(e) => {
+                                            (e.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23ddd" width="100" height="100"/><text fill="%23999" x="50%" y="50%" text-anchor="middle" dy=".3em">Error</text></svg>';
+                                        }}
+                                    />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Article Selectors */}
             {isArticle && (
@@ -535,7 +663,70 @@ export function SourceDetailTab({ formData, updateFormData }: SourceDetailTabPro
                         <hr className="my-4" />
 
                         <div className="space-y-4">
-                            <h4 className="font-medium">Ảnh đại diện (Featured Image)</h4>
+                            <div className="flex items-center justify-between">
+                                <h4 className="font-medium">Ảnh đại diện (Featured Image)</h4>
+                                {featuredSelectors.length > 0 && (
+                                    <Popover open={showFeaturedPopover} onOpenChange={setShowFeaturedPopover}>
+                                        <PopoverTrigger asChild>
+                                            <Button variant="outline" size="sm">
+                                                <Wand2 className="h-4 w-4 mr-2" />
+                                                Chọn selector ({featuredSelectors.length})
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[400px] p-0" align="end">
+                                            <div className="p-3 border-b">
+                                                <h4 className="font-medium">Chọn selector ảnh đại diện</h4>
+                                                <p className="text-xs text-muted-foreground">
+                                                    Click để áp dụng, hoặc xem preview ảnh
+                                                </p>
+                                            </div>
+                                            <ScrollArea className="max-h-[300px]">
+                                                <div className="p-2 space-y-1">
+                                                    {featuredSelectors.map((sel, i) => (
+                                                        <div
+                                                            key={i}
+                                                            className="flex items-center gap-2 p-2 rounded hover:bg-muted cursor-pointer group"
+                                                        >
+                                                            <div
+                                                                className="flex-1 min-w-0"
+                                                                onClick={() => applyFeaturedSelector(sel)}
+                                                            >
+                                                                <div className="text-sm font-medium truncate">
+                                                                    {sel.description}
+                                                                </div>
+                                                                <div className="text-xs text-muted-foreground font-mono truncate">
+                                                                    {sel.selector}
+                                                                </div>
+                                                            </div>
+                                                            {sel.sampleImages.length > 0 && (
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-8 w-8 opacity-0 group-hover:opacity-100"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handlePreview(sel.sampleImages);
+                                                                    }}
+                                                                >
+                                                                    <Eye className="h-4 w-4" />
+                                                                </Button>
+                                                            )}
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="h-8 w-8"
+                                                                onClick={() => applyFeaturedSelector(sel)}
+                                                            >
+                                                                <Check className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </ScrollArea>
+                                        </PopoverContent>
+                                    </Popover>
+                                )}
+                            </div>
                             <SelectorField
                                 label="Selector"
                                 fieldKey="featuredImage"
@@ -563,17 +754,87 @@ export function SourceDetailTab({ formData, updateFormData }: SourceDetailTabPro
 
                         <hr className="my-4" />
 
-                        <MultiSelectorField
-                            label="Ảnh trong nội dung"
-                            fieldKey="contentImages"
-                            values={articleSelectors.contentImages || []}
-                            onChange={(v) => updateArticle({ contentImages: v })}
-                            testUrl={testUrl}
-                            hint="Ảnh trong content sẽ được upload lên Cloudinary và thay thế URL gốc"
-                            isImageField
-                            fieldConfig={articleSelectors.fieldConfigs?.contentImages as ImageFieldConfig}
-                            onConfigChange={(c) => updateArticleFieldConfig("contentImages", c)}
-                        />
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h4 className="font-medium">Ảnh trong nội dung</h4>
+                                    <p className="text-xs text-muted-foreground">
+                                        Ảnh trong content sẽ được upload lên Cloudinary và thay thế URL gốc
+                                    </p>
+                                </div>
+                                {contentSelectors.length > 0 && (
+                                    <Popover open={showContentPopover} onOpenChange={setShowContentPopover}>
+                                        <PopoverTrigger asChild>
+                                            <Button variant="outline" size="sm">
+                                                <Wand2 className="h-4 w-4 mr-2" />
+                                                Chọn selector ({contentSelectors.length})
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[400px] p-0" align="end">
+                                            <div className="p-3 border-b">
+                                                <h4 className="font-medium">Chọn selector ảnh nội dung</h4>
+                                                <p className="text-xs text-muted-foreground">
+                                                    Click để thêm selector vào danh sách
+                                                </p>
+                                            </div>
+                                            <ScrollArea className="max-h-[300px]">
+                                                <div className="p-2 space-y-1">
+                                                    {contentSelectors.map((sel, i) => (
+                                                        <div
+                                                            key={i}
+                                                            className="flex items-center gap-2 p-2 rounded hover:bg-muted cursor-pointer group"
+                                                        >
+                                                            <div
+                                                                className="flex-1 min-w-0"
+                                                                onClick={() => applyContentSelector(sel)}
+                                                            >
+                                                                <div className="text-sm font-medium truncate">
+                                                                    {sel.description}
+                                                                </div>
+                                                                <div className="text-xs text-muted-foreground font-mono truncate">
+                                                                    {sel.selector}
+                                                                </div>
+                                                            </div>
+                                                            {sel.sampleImages.length > 0 && (
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-8 w-8 opacity-0 group-hover:opacity-100"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handlePreview(sel.sampleImages);
+                                                                    }}
+                                                                >
+                                                                    <Eye className="h-4 w-4" />
+                                                                </Button>
+                                                            )}
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="h-8 w-8"
+                                                                onClick={() => applyContentSelector(sel)}
+                                                            >
+                                                                <Plus className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </ScrollArea>
+                                        </PopoverContent>
+                                    </Popover>
+                                )}
+                            </div>
+                            <MultiSelectorField
+                                label=""
+                                fieldKey="contentImages"
+                                values={articleSelectors.contentImages || []}
+                                onChange={(v) => updateArticle({ contentImages: v })}
+                                testUrl={testUrl}
+                                isImageField
+                                fieldConfig={articleSelectors.fieldConfigs?.contentImages as ImageFieldConfig}
+                                onConfigChange={(c) => updateArticleFieldConfig("contentImages", c)}
+                            />
+                        </div>
                     </CardContent>
                 </Card>
             )}

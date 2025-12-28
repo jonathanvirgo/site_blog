@@ -20,6 +20,8 @@ import {
     Users,
     List,
     Loader2,
+    Download,
+    Bot,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -92,9 +94,14 @@ const menuItems = [
         icon: Image,
     },
     {
+        title: "Quick Import",
+        href: "/admin/quick-import",
+        icon: Download,
+    },
+    {
         title: "Crawler",
         href: "/admin/crawler",
-        icon: Settings,
+        icon: Bot,
     },
     {
         title: "Thùng rác",

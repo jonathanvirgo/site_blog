@@ -17,7 +17,9 @@ import {
     ExternalLink,
     Eye,
     Package,
+    Zap,
 } from "lucide-react";
+import { QuickImportTab } from "./components/QuickImportTab";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -106,10 +108,12 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function CrawlerPage() {
-    const [activeTab, setActiveTab] = useState("import");
+    const [activeTab, setActiveTab] = useState("quick");
     const [sources, setSources] = useState<CrawlSource[]>([]);
     const [jobs, setJobs] = useState<CrawlJob[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
+    const [articleCategories, setArticleCategories] = useState<Category[]>([]);
+    const [productCategories, setProductCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
     const [runningJobs, setRunningJobs] = useState<Set<string>>(new Set());
 
@@ -191,10 +195,37 @@ export default function CrawlerPage() {
         }
     }, []);
 
+    const fetchAllCategories = useCallback(async () => {
+        try {
+            const flattenCategories = (cats: Category[], level = 0): Category[] => {
+                let result: Category[] = [];
+                for (const cat of cats) {
+                    result.push({ ...cat, name: "  ".repeat(level) + cat.name });
+                    if ((cat as Category & { children?: Category[] }).children) {
+                        result = result.concat(flattenCategories((cat as Category & { children?: Category[] }).children!, level + 1));
+                    }
+                }
+                return result;
+            };
+
+            const [articleRes, productRes] = await Promise.all([
+                fetch("/api/categories?type=article"),
+                fetch("/api/categories?type=product"),
+            ]);
+            const articleData = await articleRes.json();
+            const productData = await productRes.json();
+
+            setArticleCategories(flattenCategories(articleData.data?.articleCategories || []));
+            setProductCategories(flattenCategories(productData.data?.productCategories || []));
+        } catch (error) {
+            console.error("Failed to fetch all categories:", error);
+        }
+    }, []);
+
     useEffect(() => {
-        Promise.all([fetchSources(), fetchJobs(), fetchCategories()])
+        Promise.all([fetchSources(), fetchJobs(), fetchCategories(), fetchAllCategories()])
             .finally(() => setLoading(false));
-    }, [fetchSources, fetchJobs, fetchCategories]);
+    }, [fetchSources, fetchJobs, fetchCategories, fetchAllCategories]);
 
     // Manual Crawl handler
     const handleManualCrawl = async () => {
@@ -479,7 +510,11 @@ export default function CrawlerPage() {
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList>
+                <TabsList className="flex-wrap h-auto">
+                    <TabsTrigger value="quick" className="gap-1">
+                        <Zap className="w-4 h-4" />
+                        Quick Import
+                    </TabsTrigger>
                     <TabsTrigger value="import">Import mới</TabsTrigger>
                     <TabsTrigger value="manual">Manual Crawl</TabsTrigger>
                     <TabsTrigger value="queue">Hàng đợi ({jobs.filter(j => ["queued", "processing"].includes(j.status)).length})</TabsTrigger>
@@ -487,6 +522,14 @@ export default function CrawlerPage() {
                     <TabsTrigger value="completed">Đã hoàn thành</TabsTrigger>
                     <TabsTrigger value="sources">Nguồn ({sources.length})</TabsTrigger>
                 </TabsList>
+
+                {/* Quick Import Tab */}
+                <TabsContent value="quick">
+                    <QuickImportTab
+                        articleCategories={articleCategories}
+                        productCategories={productCategories}
+                    />
+                </TabsContent>
 
                 {/* Import Tab */}
                 <TabsContent value="import" className="space-y-4">
