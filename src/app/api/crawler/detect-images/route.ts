@@ -86,7 +86,8 @@ export async function POST(request: NextRequest) {
         };
 
         // Helper to get image URL from element
-        const getImageUrl = ($img: cheerio.Cheerio<cheerio.Element>): string => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const getImageUrl = ($img: cheerio.Cheerio<any>): string => {
             let src = $img.attr("src") || "";
             if (!src || src.startsWith("data:")) {
                 for (const attr of LAZY_LOAD_ATTRS) {
@@ -114,7 +115,7 @@ export async function POST(request: NextRequest) {
 
         // 2. Check twitter:image
         const twitterImage = $('meta[name="twitter:image"]').attr("content") ||
-                             $('meta[property="twitter:image"]').attr("content");
+            $('meta[property="twitter:image"]').attr("content");
         if (twitterImage && twitterImage !== ogImage) {
             featuredSelectors.push({
                 selector: "meta[name='twitter:image']::attr(content)",
@@ -166,7 +167,7 @@ export async function POST(request: NextRequest) {
         for (const pattern of contentPatterns) {
             const $imgs = $(pattern.sel);
             const validImages: string[] = [];
-            
+
             $imgs.each((_, img) => {
                 const imgUrl = getImageUrl($(img));
                 if (imgUrl && !shouldSkip(imgUrl) && validImages.length < 5) {

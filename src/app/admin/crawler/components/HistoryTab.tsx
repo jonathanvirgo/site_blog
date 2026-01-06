@@ -87,7 +87,7 @@ const statusColors: Record<string, string> = {
 export function HistoryTab({ jobs, categories, onRefresh }: HistoryTabProps) {
     const [activeTab, setActiveTab] = useState("pending");
     const [runningJobs, setRunningJobs] = useState<Set<string>>(new Set());
-    
+
     // Preview modal
     const [previewJob, setPreviewJob] = useState<CrawlJob | null>(null);
     const [previewData, setPreviewData] = useState<Record<string, unknown>>({});
@@ -490,7 +490,7 @@ export function HistoryTab({ jobs, categories, onRefresh }: HistoryTabProps) {
                                     />
                                 </div>
                             )}
-                            {previewData.excerpt && (
+                            {Boolean(previewData.excerpt) && (
                                 <div>
                                     <Label className="text-sm text-muted-foreground">Tóm tắt</Label>
                                     <p className="text-sm">{previewData.excerpt as string}</p>
