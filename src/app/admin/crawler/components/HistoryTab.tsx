@@ -480,7 +480,7 @@ export function HistoryTab({ jobs, categories, onRefresh }: HistoryTabProps) {
                                     {(previewData.title as string) || (previewData.name as string) || "Không có tiêu đề"}
                                 </p>
                             </div>
-                            {previewData.featuredImage && (
+                            {Boolean(previewData.featuredImage) && (
                                 <div>
                                     <Label className="text-sm text-muted-foreground">Ảnh đại diện</Label>
                                     <img
