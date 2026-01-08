@@ -63,44 +63,50 @@ function FilterSidebar({
     className?: string;
 }) {
     return (
-        <div>
+        <div className="bg-card rounded-xl border border-border/50 p-5">
             {/* Categories */}
             <div className="mb-6">
-                <h3 className="font-semibold mb-3">Danh mục</h3>
+                <h3 className="font-semibold mb-4 text-foreground flex items-center gap-2">
+                    <span className="w-1 h-5 bg-gradient-to-b from-primary to-cyan-500 rounded-full"></span>
+                    Danh mục
+                </h3>
                 <div className="space-y-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
+                    <label className="flex items-center gap-3 cursor-pointer p-2 rounded-lg hover:bg-secondary/50 transition-colors">
                         <input
                             type="radio"
                             name="category"
-                            className="h-4 w-4"
+                            className="h-4 w-4 text-primary accent-primary"
                             checked={selectedCategory === "all"}
                             onChange={() => onCategoryChange("all")}
                         />
-                        <span className="flex-1">Tất cả</span>
+                        <span className="flex-1 text-sm">Tất cả</span>
                     </label>
                     {categories.map((cat) => (
                         <label
                             key={cat.slug}
-                            className="flex items-center gap-2 cursor-pointer"
+                            className="flex items-center gap-3 cursor-pointer p-2 rounded-lg hover:bg-secondary/50 transition-colors"
                         >
                             <input
                                 type="radio"
                                 name="category"
-                                className="h-4 w-4"
+                                className="h-4 w-4 text-primary accent-primary"
                                 checked={selectedCategory === cat.id}
                                 onChange={() => onCategoryChange(cat.id)}
                             />
-                            <span className="flex-1">{cat.name}</span>
+                            <span className="flex-1 text-sm">{cat.name}</span>
                         </label>
                     ))}
                 </div>
             </div>
 
-            <Separator className="my-4" />
+            <Separator className="my-4 bg-border/50" />
 
             {/* Price Range */}
             <div className="mb-6">
-                <h3 className="font-semibold mb-3">Khoảng giá</h3>
+                <h3 className="font-semibold mb-4 text-foreground flex items-center gap-2">
+                    <span className="w-1 h-5 bg-gradient-to-b from-primary to-cyan-500 rounded-full"></span>
+                    Khoảng giá
+                </h3>
                 <div className="space-y-2">
                     {[
                         { label: "Dưới 200.000đ", value: "0-200000" },
@@ -110,10 +116,10 @@ function FilterSidebar({
                     ].map((range) => (
                         <label
                             key={range.value}
-                            className="flex items-center gap-2 cursor-pointer"
+                            className="flex items-center gap-3 cursor-pointer p-2 rounded-lg hover:bg-secondary/50 transition-colors"
                         >
-                            <input type="checkbox" className="h-4 w-4 rounded" />
-                            <span>{range.label}</span>
+                            <input type="checkbox" className="h-4 w-4 rounded accent-primary" />
+                            <span className="text-sm">{range.label}</span>
                         </label>
                     ))}
                 </div>
@@ -234,11 +240,16 @@ export default function ShopPage() {
     };
 
     return (
-        <div className="py-8">
+        <div className="py-8 md:py-12">
             <div className="container mx-auto px-4">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold mb-2">Cửa hàng</h1>
+                <div className="mb-8 animate-fade-in">
+                    <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
+                        <span className="p-2 rounded-xl bg-primary/10">
+                            <ShoppingCart className="h-6 w-6 text-primary" />
+                        </span>
+                        Cửa hàng
+                    </h1>
                     <p className="text-muted-foreground">
                         Khám phá các sản phẩm chăm sóc sức khỏe chất lượng cao
                     </p>
@@ -321,10 +332,15 @@ export default function ShopPage() {
                         {/* Loading State */}
                         {loading ? (
                             <div className="flex items-center justify-center py-12">
-                                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-cyan-500/20 flex items-center justify-center">
+                                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                                </div>
                             </div>
                         ) : products.length === 0 ? (
-                            <div className="text-center py-12">
+                            <div className="text-center py-16">
+                                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                                    <ShoppingCart className="h-12 w-12 text-muted-foreground" />
+                                </div>
                                 <p className="text-muted-foreground">Không tìm thấy sản phẩm nào</p>
                             </div>
                         ) : (
@@ -346,7 +362,7 @@ export default function ShopPage() {
                                     return (
                                         <Card
                                             key={product.id}
-                                            className={`group overflow-hidden ${viewMode === "list" ? "flex flex-row" : ""}`}
+                                            className={`group overflow-hidden border border-border/50 card-interactive ${viewMode === "list" ? "flex flex-row" : ""}`}
                                         >
                                             <div
                                                 className={`relative overflow-hidden ${viewMode === "list"
@@ -358,23 +374,25 @@ export default function ShopPage() {
                                                     <img
                                                         src={image}
                                                         alt={product.name}
-                                                        className="w-full h-full object-cover group-hover:scale-105 transition"
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full bg-muted" />
+                                                    <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                                                        <ShoppingCart className="h-8 w-8 text-muted-foreground" />
+                                                    </div>
                                                 )}
                                                 {hasDiscount && (
-                                                    <Badge className="absolute top-2 left-2 z-10 bg-red-500">
+                                                    <Badge className="absolute top-2 left-2 z-10 badge-sale">
                                                         -{Math.round((1 - salePrice / price) * 100)}%
                                                     </Badge>
                                                 )}
                                             </div>
                                             <CardContent className={`p-4 ${viewMode === "list" ? "flex-1" : ""}`}>
-                                                <p className="text-sm text-muted-foreground mb-1">
+                                                <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wide">
                                                     {product.category?.name || "Sản phẩm"}
                                                 </p>
                                                 <Link href={`/san-pham/${product.slug}`}>
-                                                    <h3 className="font-medium line-clamp-2 group-hover:text-primary transition mb-2">
+                                                    <h3 className="font-medium line-clamp-2 group-hover:text-primary transition-colors mb-2">
                                                         {product.name}
                                                     </h3>
                                                 </Link>
@@ -383,14 +401,14 @@ export default function ShopPage() {
                                                         {formatPrice(salePrice || price)}
                                                     </span>
                                                     {hasDiscount && (
-                                                        <span className="text-sm text-muted-foreground line-through">
+                                                        <span className="text-xs text-muted-foreground line-through">
                                                             {formatPrice(price)}
                                                         </span>
                                                     )}
                                                 </div>
                                                 <Button
                                                     size="sm"
-                                                    className="w-full transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                                                    className="w-full bg-primary hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300"
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         handleAddToCart(product);

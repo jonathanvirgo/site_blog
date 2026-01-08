@@ -281,7 +281,9 @@ export default function CheckoutPage() {
     if (loading) {
         return (
             <div className="py-16 flex items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-cyan-500/20 flex items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
             </div>
         );
     }
@@ -291,12 +293,12 @@ export default function CheckoutPage() {
     }
 
     return (
-        <div className="py-8">
+        <div className="py-8 md:py-12">
             <div className="container mx-auto px-4">
                 {/* Header */}
-                <div className="flex items-center gap-4 mb-8">
+                <div className="flex items-center gap-4 mb-8 animate-fade-in">
                     <Link href="/gio-hang">
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" className="hover:bg-primary/10">
                             <ArrowLeft className="h-5 w-5" />
                         </Button>
                     </Link>
@@ -308,10 +310,12 @@ export default function CheckoutPage() {
                         {/* Form */}
                         <div className="lg:col-span-2 space-y-6">
                             {/* Shipping Info */}
-                            <Card>
+                            <Card className="border border-border/50 shadow-sm">
                                 <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Truck className="h-5 w-5" />
+                                    <CardTitle className="flex items-center gap-3">
+                                        <span className="p-2 rounded-xl bg-primary/10">
+                                            <Truck className="h-5 w-5 text-primary" />
+                                        </span>
                                         Thông tin giao hàng
                                     </CardTitle>
                                 </CardHeader>
@@ -438,10 +442,12 @@ export default function CheckoutPage() {
                             </Card>
 
                             {/* Payment Method */}
-                            <Card>
+                            <Card className="border border-border/50 shadow-sm">
                                 <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <CreditCard className="h-5 w-5" />
+                                    <CardTitle className="flex items-center gap-3">
+                                        <span className="p-2 rounded-xl bg-primary/10">
+                                            <CreditCard className="h-5 w-5 text-primary" />
+                                        </span>
                                         Phương thức thanh toán
                                     </CardTitle>
                                 </CardHeader>
@@ -453,9 +459,9 @@ export default function CheckoutPage() {
                                             return (
                                                 <label
                                                     key={method.id}
-                                                    className={`flex items-center gap-3 p-4 border rounded-lg cursor-pointer transition ${isSelected
-                                                        ? "border-primary bg-primary/5"
-                                                        : "hover:bg-muted/50"
+                                                    className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${isSelected
+                                                        ? "border-primary bg-primary/5 shadow-sm"
+                                                        : "border-border/50 hover:bg-secondary/50 hover:border-primary/30"
                                                         }`}
                                                 >
                                                     <input
@@ -464,9 +470,11 @@ export default function CheckoutPage() {
                                                         value={method.id}
                                                         checked={isSelected}
                                                         onChange={() => updateForm("paymentMethod", method.id)}
-                                                        className="h-4 w-4"
+                                                        className="h-4 w-4 accent-primary"
                                                     />
-                                                    <Icon className="h-5 w-5 text-muted-foreground" />
+                                                    <div className={`p-2 rounded-lg ${isSelected ? 'bg-primary/10' : 'bg-secondary/50'}`}>
+                                                        <Icon className={`h-5 w-5 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} />
+                                                    </div>
                                                     <span className="font-medium">{method.name}</span>
                                                     {isSelected && (
                                                         <Check className="h-4 w-4 text-primary ml-auto" />
@@ -481,7 +489,7 @@ export default function CheckoutPage() {
 
                         {/* Order Summary */}
                         <div>
-                            <Card className="sticky top-24">
+                            <Card className="sticky top-24 border border-border/50 shadow-lg">
                                 <CardHeader>
                                     <CardTitle>Đơn hàng của bạn</CardTitle>
                                 </CardHeader>
@@ -504,7 +512,7 @@ export default function CheckoutPage() {
                                         );
                                     })}
 
-                                    <Separator />
+                                    <Separator className="bg-border/50" />
 
                                     {/* Summary */}
                                     <div className="space-y-2">
@@ -514,13 +522,13 @@ export default function CheckoutPage() {
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-muted-foreground">Phí vận chuyển</span>
-                                            <span className={shipping === 0 ? "text-green-600" : ""}>
+                                            <span className={shipping === 0 ? "text-accent font-medium" : ""}>
                                                 {shipping === 0 ? "Miễn phí" : formatPrice(shipping)}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <Separator />
+                                    <Separator className="bg-border/50" />
 
                                     <div className="flex justify-between text-lg font-bold">
                                         <span>Tổng cộng</span>
@@ -530,7 +538,7 @@ export default function CheckoutPage() {
                                     <Button
                                         type="submit"
                                         size="lg"
-                                        className="w-full"
+                                        className="w-full bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-500/90 shadow-lg"
                                         disabled={isSubmitting}
                                     >
                                         {isSubmitting ? (
@@ -545,7 +553,7 @@ export default function CheckoutPage() {
 
                                     <p className="text-xs text-center text-muted-foreground">
                                         Bằng việc đặt hàng, bạn đồng ý với{" "}
-                                        <Link href="/dieu-khoan" className="underline">
+                                        <Link href="/dieu-khoan" className="text-primary hover:underline">
                                             Điều khoản sử dụng
                                         </Link>
                                     </p>

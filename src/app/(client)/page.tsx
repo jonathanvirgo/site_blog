@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Star, Pill, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FeaturedArticlesCarousel } from "@/components/client/FeaturedArticlesCarousel";
@@ -92,70 +93,71 @@ export default async function HomePage() {
     return (
         <>
             {/* SECTION 1: Featured Content Grid */}
-            <section className="py-8">
+            <section className="py-8 md:py-12">
                 <div className="container mx-auto px-4">
                     <div className="grid lg:grid-cols-12 gap-6">
                         {/* Main Content - 8 cols */}
-                        <div className="lg:col-span-8 space-y-4">
+                        <div className="lg:col-span-8 space-y-6 animate-fade-in">
                             {/* Hero Article */}
                             {heroArticle ? (
                                 <Link href={`/bai-viet/${heroArticle.slug}`}>
-                                    <div className="relative aspect-[16/9] rounded-xl overflow-hidden group">
+                                    <div className="relative aspect-[16/9] rounded-2xl overflow-hidden group shadow-xl">
                                         {heroArticle.featuredImage ? (
                                             <img
                                                 src={heroArticle.featuredImage}
                                                 alt={heroArticle.title}
-                                                className="absolute inset-0 w-full h-full object-cover"
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                             />
                                         ) : (
-                                            <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900" />
+                                            <div className="absolute inset-0 gradient-hero" />
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                                         {heroArticle.isFeatured && (
-                                            <Badge className="absolute top-4 left-4 bg-primary">
-                                                ⭐ Nổi bật
+                                            <Badge className="absolute top-4 left-4 badge-featured flex items-center gap-1">
+                                                <Star className="h-3 w-3" /> Nổi bật
                                             </Badge>
                                         )}
                                         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                                            <h1 className="text-2xl md:text-4xl font-bold text-white mb-3 group-hover:underline decoration-2 underline-offset-4 transition">
+                                            <h1 className="text-2xl md:text-4xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors duration-300">
                                                 {heroArticle.title}
                                             </h1>
-                                            <p className="text-white/80 text-sm md:text-base line-clamp-2 mb-4">
+                                            <p className="text-white/80 text-sm md:text-base line-clamp-2 mb-4 max-w-2xl">
                                                 {heroArticle.excerpt}
                                             </p>
-                                            <Button size="lg" className="group-hover:scale-105 transition">
+                                            <Button size="lg" className="bg-white text-primary hover:bg-white/90 group-hover:shadow-lg transition-all duration-300">
                                                 Đọc tiếp
+                                                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                             </Button>
                                         </div>
                                     </div>
                                 </Link>
                             ) : (
-                                <div className="aspect-[16/9] rounded-xl bg-slate-200 flex items-center justify-center">
+                                <div className="aspect-[16/9] rounded-2xl bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
                                     <p className="text-muted-foreground">Chưa có bài viết nổi bật</p>
                                 </div>
                             )}
 
                             {/* Sub-features */}
                             <div className="grid md:grid-cols-2 gap-4">
-                                {subFeatures.map((article: CachedArticle) => (
+                                {subFeatures.map((article: CachedArticle, index: number) => (
                                     <Link key={article.id} href={`/bai-viet/${article.slug}`}>
-                                        <div className="group rounded-lg overflow-hidden border hover:shadow-lg hover:-translate-y-1 transition-all">
+                                        <div className={`group rounded-xl overflow-hidden border border-border/50 card-interactive bg-card delay-${(index + 1) * 100}`}>
                                             <div className="aspect-[16/9] overflow-hidden">
                                                 {article.featuredImage ? (
                                                     <img
                                                         src={article.featuredImage}
                                                         alt={article.title}
-                                                        className="w-full h-full object-cover group-hover:scale-105 transition"
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 group-hover:scale-105 transition" />
+                                                    <div className="w-full h-full bg-gradient-to-br from-secondary to-muted group-hover:scale-105 transition-transform duration-500" />
                                                 )}
                                             </div>
                                             <div className="p-4">
-                                                <Badge variant="secondary" className="mb-2">
+                                                <Badge variant="secondary" className="mb-2 bg-primary/10 text-primary hover:bg-primary/20">
                                                     {article.category?.name || "Chung"}
                                                 </Badge>
-                                                <h3 className="font-semibold line-clamp-2 group-hover:text-primary transition">
+                                                <h3 className="font-semibold line-clamp-2 group-hover:text-primary transition-colors">
                                                     {article.title}
                                                 </h3>
                                             </div>
@@ -166,30 +168,30 @@ export default async function HomePage() {
                         </div>
 
                         {/* Sidebar - 4 cols */}
-                        <div className="lg:col-span-4 space-y-4">
+                        <div className="lg:col-span-4 space-y-4 animate-slide-in-right">
                             {/* Featured Sidebar Article */}
                             {sidebarArticles[0] && (
                                 <Link href={`/bai-viet/${sidebarArticles[0].slug}`}>
-                                    <div className="relative aspect-[4/3] rounded-lg overflow-hidden group">
+                                    <div className="relative aspect-[4/3] rounded-xl overflow-hidden group shadow-lg">
                                         {sidebarArticles[0].featuredImage ? (
                                             <img
                                                 src={sidebarArticles[0].featuredImage}
                                                 alt={sidebarArticles[0].title}
-                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
                                         ) : (
-                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600" />
+                                            <div className="absolute inset-0 bg-gradient-to-br from-primary to-cyan-500" />
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                                         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                                             {sidebarArticles[0].category && (
-                                                <Badge className="mb-2 bg-primary">{sidebarArticles[0].category.name}</Badge>
+                                                <Badge className="mb-2 bg-white/20 backdrop-blur-sm border border-white/30">{sidebarArticles[0].category.name}</Badge>
                                             )}
-                                            <h3 className="font-semibold line-clamp-2 group-hover:underline transition">
+                                            <h3 className="font-semibold line-clamp-2 group-hover:text-cyan-300 transition-colors">
                                                 {sidebarArticles[0].title}
                                             </h3>
                                             {sidebarArticles[0].excerpt && (
-                                                <p className="text-sm text-white/80 line-clamp-2 mt-1">
+                                                <p className="text-sm text-white/70 line-clamp-2 mt-1">
                                                     {sidebarArticles[0].excerpt}
                                                 </p>
                                             )}
@@ -199,11 +201,11 @@ export default async function HomePage() {
                             )}
 
                             {/* Sidebar Articles */}
-                            <div className="space-y-3">
+                            <div className="space-y-2 bg-card rounded-xl p-3 border border-border/50">
                                 {sidebarArticles.slice(1).map((article: CachedArticle) => (
                                     <Link key={article.id} href={`/bai-viet/${article.slug}`}>
-                                        <div className="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition group">
-                                            <div className="w-20 h-20 flex-shrink-0 rounded overflow-hidden">
+                                        <div className="flex gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors group">
+                                            <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden">
                                                 {article.featuredImage ? (
                                                     <img
                                                         src={article.featuredImage}
@@ -211,10 +213,10 @@ export default async function HomePage() {
                                                         className="w-full h-full object-cover"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300" />
+                                                    <div className="w-full h-full bg-gradient-to-br from-secondary to-muted" />
                                                 )}
                                             </div>
-                                            <h4 className="text-sm font-medium line-clamp-3 group-hover:text-primary transition">
+                                            <h4 className="text-sm font-medium line-clamp-3 group-hover:text-primary transition-colors">
                                                 {article.title}
                                             </h4>
                                         </div>
@@ -227,43 +229,44 @@ export default async function HomePage() {
             </section>
 
             {/* SECTION 2: Featured Articles Carousel */}
-            <section className="py-8 border-t">
+            <section className="py-10 border-t border-border/50">
                 <div className="container mx-auto px-4">
                     <FeaturedArticlesCarousel articles={displayFeaturedArticles} />
                 </div>
             </section>
 
             {/* SECTION 3: Product Carousel */}
-            <section className="py-12 bg-slate-50">
+            <section className="py-12 section-alt">
                 <div className="container mx-auto px-4">
                     <ProductCarousel
                         products={featuredProducts}
-                        title="Sản phẩm Bác sĩ khuyên dùng 💊"
+                        title="Sản phẩm Bác sĩ khuyên dùng"
                         viewAllLink="/san-pham"
+                        icon={<Pill className="h-6 w-6 text-primary" />}
                     />
                 </div>
             </section>
 
             {/* SECTION 4: Category Images Grid */}
-            <section className="py-12">
+            <section className="py-12 section-highlight">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-3 gap-6">
                         {/* Column 1 */}
                         {displayCategories[0] && (
                             <Link href={`/chuyen-muc/${displayCategories[0].slug}`}>
-                                <div className="relative h-[400px] rounded-xl overflow-hidden group">
+                                <div className="relative h-[400px] rounded-2xl overflow-hidden group shadow-lg">
                                     {displayCategories[0].image ? (
                                         <img
                                             src={displayCategories[0].image}
                                             alt={displayCategories[0].name}
-                                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition"
+                                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                         />
                                     ) : (
-                                        <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-green-600 group-hover:scale-105 transition" />
+                                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-600 group-hover:scale-110 transition-transform duration-700" />
                                     )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                    <div className="absolute bottom-4 left-4">
-                                        <span className="bg-white/90 px-4 py-2 rounded-lg font-semibold">
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all duration-300" />
+                                    <div className="absolute bottom-4 left-4 right-4">
+                                        <span className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm px-5 py-2.5 rounded-xl font-semibold text-foreground shadow-lg group-hover:bg-primary group-hover:text-white transition-all duration-300">
                                             {displayCategories[0].name}
                                         </span>
                                     </div>
@@ -275,19 +278,19 @@ export default async function HomePage() {
                         <div className="space-y-6">
                             {displayCategories[1] && (
                                 <Link href={`/chuyen-muc/${displayCategories[1].slug}`}>
-                                    <div className="relative h-[188px] rounded-xl overflow-hidden group">
+                                    <div className="relative h-[188px] rounded-2xl overflow-hidden group shadow-lg">
                                         {displayCategories[1].image ? (
                                             <img
                                                 src={displayCategories[1].image}
                                                 alt={displayCategories[1].name}
-                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition"
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                             />
                                         ) : (
-                                            <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600 group-hover:scale-105 transition" />
+                                            <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 group-hover:scale-110 transition-transform duration-700" />
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                        <div className="absolute bottom-4 left-4">
-                                            <span className="bg-white/90 px-4 py-2 rounded-lg font-semibold">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all duration-300" />
+                                        <div className="absolute bottom-4 left-4 right-4">
+                                            <span className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm px-5 py-2.5 rounded-xl font-semibold text-foreground shadow-lg group-hover:bg-primary group-hover:text-white transition-all duration-300">
                                                 {displayCategories[1].name}
                                             </span>
                                         </div>
@@ -296,19 +299,19 @@ export default async function HomePage() {
                             )}
                             {displayCategories[2] && (
                                 <Link href={`/chuyen-muc/${displayCategories[2].slug}`}>
-                                    <div className="relative h-[188px] rounded-xl overflow-hidden group">
+                                    <div className="relative h-[188px] rounded-2xl overflow-hidden group shadow-lg">
                                         {displayCategories[2].image ? (
                                             <img
                                                 src={displayCategories[2].image}
                                                 alt={displayCategories[2].name}
-                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition"
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                             />
                                         ) : (
-                                            <div className="absolute inset-0 bg-gradient-to-br from-pink-400 to-pink-600 group-hover:scale-105 transition" />
+                                            <div className="absolute inset-0 bg-gradient-to-br from-rose-400 to-pink-500 group-hover:scale-110 transition-transform duration-700" />
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                        <div className="absolute bottom-4 left-4">
-                                            <span className="bg-white/90 px-4 py-2 rounded-lg font-semibold">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all duration-300" />
+                                        <div className="absolute bottom-4 left-4 right-4">
+                                            <span className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm px-5 py-2.5 rounded-xl font-semibold text-foreground shadow-lg group-hover:bg-primary group-hover:text-white transition-all duration-300">
                                                 {displayCategories[2].name}
                                             </span>
                                         </div>
@@ -320,19 +323,19 @@ export default async function HomePage() {
                         {/* Column 3 */}
                         {displayCategories[3] && (
                             <Link href={`/chuyen-muc/${displayCategories[3].slug}`}>
-                                <div className="relative h-[400px] rounded-xl overflow-hidden group">
+                                <div className="relative h-[400px] rounded-2xl overflow-hidden group shadow-lg">
                                     {displayCategories[3].image ? (
                                         <img
                                             src={displayCategories[3].image}
                                             alt={displayCategories[3].name}
-                                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition"
+                                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                         />
                                     ) : (
-                                        <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-purple-600 group-hover:scale-105 transition" />
+                                        <div className="absolute inset-0 bg-gradient-to-br from-violet-400 to-purple-600 group-hover:scale-110 transition-transform duration-700" />
                                     )}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                    <div className="absolute bottom-4 left-4">
-                                        <span className="bg-white/90 px-4 py-2 rounded-lg font-semibold">
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all duration-300" />
+                                    <div className="absolute bottom-4 left-4 right-4">
+                                        <span className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm px-5 py-2.5 rounded-xl font-semibold text-foreground shadow-lg group-hover:bg-primary group-hover:text-white transition-all duration-300">
                                             {displayCategories[3].name}
                                         </span>
                                     </div>

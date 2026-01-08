@@ -131,13 +131,15 @@ export default function CartPage() {
         return (
             <div className="py-16">
                 <div className="container mx-auto px-4 text-center">
-                    <ShoppingBag className="h-24 w-24 mx-auto text-muted-foreground mb-6" />
+                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                        <ShoppingBag className="h-12 w-12 text-muted-foreground" />
+                    </div>
                     <h1 className="text-2xl font-bold mb-4">Giỏ hàng trống</h1>
                     <p className="text-muted-foreground mb-8">
                         Chưa có sản phẩm nào trong giỏ hàng
                     </p>
                     <Link href="/san-pham">
-                        <Button size="lg">
+                        <Button size="lg" className="bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-500/90 shadow-lg">
                             Tiếp tục mua sắm
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
@@ -148,9 +150,9 @@ export default function CartPage() {
     }
 
     return (
-        <div className="py-8">
+        <div className="py-8 md:py-12">
             <div className="container mx-auto px-4">
-                <h1 className="text-3xl font-bold mb-8">Giỏ hàng ({cartItems.length})</h1>
+                <h1 className="text-3xl font-bold mb-8">Giỏ hàng <span className="text-primary">({cartItems.length})</span></h1>
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Cart Items */}
@@ -159,11 +161,11 @@ export default function CartPage() {
                             const isUpdating = updating === item.id;
 
                             return (
-                                <Card key={item.id} className={isUpdating ? "opacity-50" : ""}>
+                                <Card key={item.id} className={`border border-border/50 shadow-sm transition-opacity ${isUpdating ? "opacity-50" : ""}`}>
                                     <CardContent className="p-4">
                                         <div className="flex gap-4">
                                             {/* Image */}
-                                            <div className="w-24 h-24 rounded-lg flex-shrink-0 overflow-hidden">
+                                            <div className="w-24 h-24 rounded-xl flex-shrink-0 overflow-hidden bg-secondary/30">
                                                 {item.image ? (
                                                     <img
                                                         src={item.image}
@@ -171,7 +173,9 @@ export default function CartPage() {
                                                         className="w-full h-full object-cover"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full bg-muted" />
+                                                    <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                                                        <ShoppingBag className="h-8 w-8 text-muted-foreground" />
+                                                    </div>
                                                 )}
                                             </div>
 
@@ -253,7 +257,7 @@ export default function CartPage() {
 
                     {/* Order Summary */}
                     <div>
-                        <Card className="sticky top-24">
+                        <Card className="sticky top-24 border border-border/50 shadow-lg">
                             <CardContent className="p-6">
                                 <h2 className="text-lg font-semibold mb-4">Tóm tắt đơn hàng</h2>
 
@@ -264,11 +268,13 @@ export default function CartPage() {
                                         value={couponCode}
                                         onChange={(e) => setCouponCode(e.target.value)}
                                         disabled={!!appliedCoupon}
+                                        className="bg-secondary/30 border-border/50 focus:border-primary"
                                     />
                                     <Button
                                         variant="outline"
                                         onClick={applyCoupon}
                                         disabled={!couponCode || !!appliedCoupon}
+                                        className="border-primary text-primary hover:bg-primary hover:text-white"
                                     >
                                         Áp dụng
                                     </Button>
@@ -330,17 +336,17 @@ export default function CartPage() {
                                 </div>
 
                                 <Link href="/thanh-toan" className="block mt-6">
-                                    <Button size="lg" className="w-full">
+                                    <Button size="lg" className="w-full bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-500/90 shadow-lg">
                                         Tiến hành thanh toán
                                         <ArrowRight className="ml-2 h-4 w-4" />
                                     </Button>
                                 </Link>
 
                                 {/* Benefits */}
-                                <div className="mt-6 pt-4 border-t space-y-2 text-sm text-muted-foreground">
-                                    <p>✓ Giao hàng miễn phí từ 500.000đ</p>
-                                    <p>✓ Đổi trả trong 30 ngày</p>
-                                    <p>✓ Thanh toán an toàn</p>
+                                <div className="mt-6 pt-4 border-t border-border/50 space-y-2 text-sm text-muted-foreground">
+                                    <p className="flex items-center gap-2"><span className="text-accent">✓</span> Giao hàng miễn phí từ 500.000đ</p>
+                                    <p className="flex items-center gap-2"><span className="text-accent">✓</span> Đổi trả trong 30 ngày</p>
+                                    <p className="flex items-center gap-2"><span className="text-accent">✓</span> Thanh toán an toàn</p>
                                 </div>
                             </CardContent>
                         </Card>

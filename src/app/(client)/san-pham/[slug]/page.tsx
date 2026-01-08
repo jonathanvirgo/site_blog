@@ -7,6 +7,8 @@ import {
     RotateCcw,
     Star,
     ChevronRight,
+    Flame,
+    Sparkles,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -205,15 +207,15 @@ export default async function ProductDetailPage({ params }: PageProps) {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
-            <div className="py-8">
+            <div className="py-8 md:py-12">
                 <div className="container mx-auto px-4">
                     {/* Breadcrumb */}
                     <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6" aria-label="Breadcrumb">
-                        <Link href="/" className="hover:text-primary transition">
+                        <Link href="/" className="hover:text-primary transition-colors">
                             Trang chủ
                         </Link>
                         <ChevronRight className="h-4 w-4" />
-                        <Link href="/san-pham" className="hover:text-primary transition">
+                        <Link href="/san-pham" className="hover:text-primary transition-colors">
                             Cửa hàng
                         </Link>
                         {product.category && (
@@ -221,7 +223,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                                 <ChevronRight className="h-4 w-4" />
                                 <Link
                                     href={`/san-pham?category=${product.category.id}`}
-                                    className="hover:text-primary transition"
+                                    className="hover:text-primary transition-colors"
                                 >
                                     {product.category.name}
                                 </Link>
@@ -234,17 +236,17 @@ export default async function ProductDetailPage({ params }: PageProps) {
                     </nav>
 
                     {/* Product Header */}
-                    <div className="mb-8">
+                    <div className="mb-8 animate-fade-in">
                         {product.category && (
-                            <Badge variant="secondary" className="mb-3">
+                            <Badge variant="secondary" className="mb-3 bg-primary/10 text-primary border-0">
                                 {product.category.name}
                             </Badge>
                         )}
-                        <h1 className="text-2xl lg:text-3xl font-bold mb-4">
+                        <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-foreground">
                             {product.name}
                         </h1>
                         {product.shortDescription && (
-                            <p className="text-muted-foreground text-lg">
+                            <p className="text-muted-foreground text-lg leading-relaxed">
                                 {product.shortDescription}
                             </p>
                         )}
@@ -262,31 +264,31 @@ export default async function ProductDetailPage({ params }: PageProps) {
                     </div>
 
                     {/* Trust Badges */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12 p-6 bg-muted/30 rounded-xl">
-                        <div className="flex items-center gap-3">
-                            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                                <Truck className="h-6 w-6 text-primary" />
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12 p-6 bg-gradient-to-r from-secondary/50 to-cyan-50/50 rounded-2xl border border-border/50">
+                        <div className="flex items-center gap-4 group">
+                            <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary/20 to-cyan-500/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                                <Truck className="h-7 w-7 text-primary" />
                             </div>
                             <div>
-                                <p className="font-medium">Giao hàng miễn phí</p>
+                                <p className="font-semibold text-foreground">Giao hàng miễn phí</p>
                                 <p className="text-sm text-muted-foreground">Đơn hàng từ 300k</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                                <Shield className="h-6 w-6 text-primary" />
+                        <div className="flex items-center gap-4 group">
+                            <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary/20 to-cyan-500/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                                <Shield className="h-7 w-7 text-primary" />
                             </div>
                             <div>
-                                <p className="font-medium">Hàng chính hãng</p>
+                                <p className="font-semibold text-foreground">Hàng chính hãng</p>
                                 <p className="text-sm text-muted-foreground">100% sản phẩm chính hãng</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                                <RotateCcw className="h-6 w-6 text-primary" />
+                        <div className="flex items-center gap-4 group">
+                            <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-primary/20 to-cyan-500/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                                <RotateCcw className="h-7 w-7 text-primary" />
                             </div>
                             <div>
-                                <p className="font-medium">Đổi trả dễ dàng</p>
+                                <p className="font-semibold text-foreground">Đổi trả dễ dàng</p>
                                 <p className="text-sm text-muted-foreground">Trong vòng 7 ngày</p>
                             </div>
                         </div>
@@ -358,10 +360,12 @@ export default async function ProductDetailPage({ params }: PageProps) {
                                 </div>
                             </TabsContent>
                             <TabsContent value="reviews" className="pt-6">
-                                <div className="text-center py-12 text-muted-foreground">
-                                    <Star className="h-12 w-12 mx-auto mb-4 text-muted-foreground/30" />
-                                    <p className="text-lg font-medium mb-2">Chưa có đánh giá nào</p>
-                                    <p>Hãy là người đầu tiên đánh giá sản phẩm này!</p>
+                                <div className="text-center py-16">
+                                    <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
+                                        <Star className="h-10 w-10 text-amber-400" />
+                                    </div>
+                                    <p className="text-lg font-medium mb-2 text-foreground">Chưa có đánh giá nào</p>
+                                    <p className="text-muted-foreground">Hãy là người đầu tiên đánh giá sản phẩm này!</p>
                                 </div>
                             </TabsContent>
                         </Tabs>
@@ -417,14 +421,15 @@ export default async function ProductDetailPage({ params }: PageProps) {
                         </Accordion>
                     </div>
 
-                    <Separator className="mb-12" />
+                    <Separator className="mb-12 bg-border/50" />
 
                     {/* Related Products Carousel */}
                     {relatedProducts.length > 0 && (
                         <section className="mb-12">
                             <ProductCarousel
                                 products={relatedProducts}
-                                title="🔥 Sản phẩm liên quan"
+                                title="Sản phẩm liên quan"
+                                icon={<Flame className="h-6 w-6 text-orange-500" />}
                                 viewAllLink={`/san-pham?category=${product.category?.id}`}
                             />
                         </section>

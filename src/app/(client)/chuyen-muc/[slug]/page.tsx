@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { Star, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import prisma from "@/lib/prisma";
@@ -236,20 +237,20 @@ export default async function CategoryPage({ params }: PageProps) {
     return (
         <>
             {/* SECTION 1: Featured Content Grid */}
-            <section className="py-8">
+            <section className="py-8 md:py-12">
                 <div className="container mx-auto px-4">
                     {/* Breadcrumb */}
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-                        <Link href="/" className="hover:text-primary transition">
+                        <Link href="/" className="hover:text-primary transition-colors">
                             Trang chủ
                         </Link>
-                        <span>/</span>
+                        <ChevronRight className="h-4 w-4" />
                         {category.parent && (
                             <>
-                                <Link href={`/chuyen-muc/${category.parent.slug}`} className="hover:text-primary transition">
+                                <Link href={`/chuyen-muc/${category.parent.slug}`} className="hover:text-primary transition-colors">
                                     {category.parent.name}
                                 </Link>
-                                <span>/</span>
+                                <ChevronRight className="h-4 w-4" />
                             </>
                         )}
                         <span className="text-foreground font-medium">{category.name}</span>
@@ -261,37 +262,38 @@ export default async function CategoryPage({ params }: PageProps) {
                             {/* Hero Article */}
                             {heroArticle ? (
                                 <Link href={`/bai-viet/${heroArticle.slug}`}>
-                                    <div className="relative aspect-[16/9] rounded-xl overflow-hidden group">
+                                    <div className="relative aspect-[16/9] rounded-2xl overflow-hidden group shadow-lg">
                                         {heroArticle.featuredImage ? (
                                             <img
                                                 src={heroArticle.featuredImage}
                                                 alt={heroArticle.title}
-                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition duration-300"
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                             />
                                         ) : (
-                                            <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900" />
+                                            <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-cyan-500/80" />
                                         )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                                         {heroArticle.isFeatured && (
-                                            <Badge className="absolute top-4 left-4 bg-primary">
-                                                ⭐ Nổi bật
+                                            <Badge className="absolute top-4 left-4 bg-gradient-to-r from-amber-500 to-orange-500 shadow-lg border-0">
+                                                <Star className="h-3 w-3 mr-1" />
+                                                Nổi bật
                                             </Badge>
                                         )}
                                         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                                            <h1 className="text-2xl md:text-4xl font-bold text-white mb-3 group-hover:underline decoration-2 underline-offset-4 transition">
+                                            <h1 className="text-2xl md:text-4xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
                                                 {heroArticle.title}
                                             </h1>
                                             <p className="text-white/80 text-sm md:text-base line-clamp-2 mb-4">
                                                 {heroArticle.excerpt}
                                             </p>
-                                            <Button size="lg" className="group-hover:scale-105 transition">
+                                            <Button size="lg" className="bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-500/90 shadow-lg">
                                                 Đọc tiếp
                                             </Button>
                                         </div>
                                     </div>
                                 </Link>
                             ) : (
-                                <div className="aspect-[16/9] rounded-xl bg-slate-200 flex items-center justify-center">
+                                <div className="aspect-[16/9] rounded-2xl bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
                                     <p className="text-muted-foreground">Chưa có bài viết nổi bật</p>
                                 </div>
                             )}
@@ -301,20 +303,20 @@ export default async function CategoryPage({ params }: PageProps) {
                                 <div className="grid md:grid-cols-2 gap-4">
                                     {subFeatureArticles.map((article) => (
                                         <Link key={article.id} href={`/bai-viet/${article.slug}`}>
-                                            <div className="group rounded-lg overflow-hidden border hover:shadow-lg hover:-translate-y-1 transition-all">
+                                            <div className="group rounded-xl overflow-hidden border border-border/50 hover:shadow-lg hover:-translate-y-1 transition-all card-interactive">
                                                 <div className="aspect-[16/9] overflow-hidden">
                                                     {article.featuredImage ? (
                                                         <img
                                                             src={article.featuredImage}
                                                             alt={article.title}
-                                                            className="w-full h-full object-cover group-hover:scale-105 transition"
+                                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                         />
                                                     ) : (
-                                                        <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 group-hover:scale-105 transition" />
+                                                        <div className="w-full h-full bg-gradient-to-br from-secondary to-muted" />
                                                     )}
                                                 </div>
                                                 <div className="p-4">
-                                                    <h3 className="font-semibold line-clamp-2 group-hover:text-primary transition">
+                                                    <h3 className="font-semibold line-clamp-2 group-hover:text-primary transition-colors">
                                                         {article.title}
                                                     </h3>
                                                 </div>
@@ -330,22 +332,22 @@ export default async function CategoryPage({ params }: PageProps) {
                             {/* Featured Sidebar Article (first article as large card) */}
                             {sidebarArticles[0] && (
                                 <Link href={`/bai-viet/${sidebarArticles[0].slug}`}>
-                                    <div className="relative aspect-[4/3] rounded-lg overflow-hidden group">
+                                    <div className="relative aspect-[4/3] rounded-xl overflow-hidden group shadow-md">
                                         {sidebarArticles[0].featuredImage ? (
                                             <img
                                                 src={sidebarArticles[0].featuredImage}
                                                 alt={sidebarArticles[0].title}
-                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                                                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
                                         ) : (
-                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600" />
+                                            <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-cyan-500/80" />
                                         )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                                         <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                                             {sidebarArticles[0].category && (
-                                                <Badge className="mb-2 bg-primary">{sidebarArticles[0].category.name}</Badge>
+                                                <Badge className="mb-2 bg-primary/90 border-0">{sidebarArticles[0].category.name}</Badge>
                                             )}
-                                            <h3 className="font-semibold line-clamp-2 group-hover:underline transition">
+                                            <h3 className="font-semibold line-clamp-2 group-hover:text-cyan-300 transition-colors">
                                                 {sidebarArticles[0].title}
                                             </h3>
                                             {sidebarArticles[0].excerpt && (
@@ -359,11 +361,11 @@ export default async function CategoryPage({ params }: PageProps) {
                             )}
 
                             {/* Sidebar Articles - small cards (remaining 3 articles) */}
-                            <div className="space-y-3">
+                            <div className="bg-card rounded-xl border border-border/50 p-4 space-y-3 shadow-sm">
                                 {sidebarArticles.slice(1).map((article) => (
                                     <Link key={article.id} href={`/bai-viet/${article.slug}`}>
-                                        <div className="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition group">
-                                            <div className="w-20 h-20 flex-shrink-0 rounded overflow-hidden">
+                                        <div className="flex gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-colors group">
+                                            <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden">
                                                 {article.featuredImage ? (
                                                     <img
                                                         src={article.featuredImage}
@@ -371,10 +373,10 @@ export default async function CategoryPage({ params }: PageProps) {
                                                         className="w-full h-full object-cover"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300" />
+                                                    <div className="w-full h-full bg-gradient-to-br from-secondary to-muted" />
                                                 )}
                                             </div>
-                                            <h4 className="text-sm font-medium line-clamp-3 group-hover:text-primary transition">
+                                            <h4 className="text-sm font-medium line-clamp-3 group-hover:text-primary transition-colors">
                                                 {article.title}
                                             </h4>
                                         </div>
@@ -387,12 +389,13 @@ export default async function CategoryPage({ params }: PageProps) {
             </section>
 
             {/* SECTION 2: Main Feed (2-Column Layout) */}
-            <section className="py-12 border-t">
+            <section className="py-12 section-alt">
                 <div className="container mx-auto px-4">
                     <div className={`grid ${hasSubcategories ? 'lg:grid-cols-2' : ''} gap-8`}>
                         {/* Left: Bài viết mới nhất */}
                         <div>
-                            <h2 className="text-xl font-bold mb-6 uppercase border-b pb-2">
+                            <h2 className="text-xl font-bold mb-6 uppercase flex items-center gap-3">
+                                <span className="w-1 h-6 bg-gradient-to-b from-primary to-cyan-500 rounded-full"></span>
                                 Bài viết mới nhất
                             </h2>
                             <div className="space-y-6">
@@ -401,25 +404,25 @@ export default async function CategoryPage({ params }: PageProps) {
                                         <Link key={article.id} href={`/bai-viet/${article.slug}`}>
                                             <div className="flex gap-4 group">
                                                 {/* Image */}
-                                                <div className="w-[240px] h-[160px] flex-shrink-0 rounded-lg overflow-hidden">
+                                                <div className="w-[240px] h-[160px] flex-shrink-0 rounded-xl overflow-hidden shadow-sm">
                                                     {article.featuredImage ? (
                                                         <img
                                                             src={article.featuredImage}
                                                             alt={article.title}
-                                                            className="w-full h-full object-cover group-hover:scale-105 transition"
+                                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                         />
                                                     ) : (
-                                                        <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300" />
+                                                        <div className="w-full h-full bg-gradient-to-br from-secondary to-muted" />
                                                     )}
                                                 </div>
                                                 {/* Content */}
                                                 <div className="flex-1 min-w-0">
                                                     {article.category && (
-                                                        <Badge variant="secondary" className="mb-2">
+                                                        <Badge variant="secondary" className="mb-2 bg-primary/10 text-primary border-0">
                                                             {article.category.name}
                                                         </Badge>
                                                     )}
-                                                    <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-primary transition mb-2">
+                                                    <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-primary transition-colors mb-2">
                                                         {article.title}
                                                     </h3>
                                                     <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
@@ -439,7 +442,7 @@ export default async function CategoryPage({ params }: PageProps) {
                                 {/* Load more button */}
                                 {mainFeedArticles.length >= 10 && (
                                     <div className="text-center pt-4">
-                                        <button className="px-8 py-3 border rounded-full font-medium hover:bg-muted transition">
+                                        <button className="px-8 py-3 border border-primary/50 rounded-full font-medium text-primary hover:bg-primary hover:text-white transition-colors">
                                             Xem thêm bài viết
                                         </button>
                                     </div>

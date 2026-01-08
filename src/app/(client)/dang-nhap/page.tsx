@@ -98,9 +98,9 @@ function LoginForm() {
 
     return (
         <>
-            <Card className="w-full max-w-md shadow-lg">
-                <CardHeader className="text-center">
-                    <CardTitle className="text-2xl">Đăng nhập</CardTitle>
+            <Card className="w-full max-w-md shadow-xl border-0 bg-card/95 backdrop-blur-sm">
+                <CardHeader className="text-center pb-4">
+                    <CardTitle className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-cyan-500">Đăng nhập</CardTitle>
                     <CardDescription>
                         Nhập thông tin để truy cập tài khoản
                     </CardDescription>
@@ -108,7 +108,7 @@ function LoginForm() {
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {error && (
-                            <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-lg">
+                            <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-lg border border-destructive/20">
                                 {error}
                             </div>
                         )}
@@ -154,15 +154,15 @@ function LoginForm() {
                             </div>
                         </div>
 
-                        <Button type="submit" className="w-full" disabled={isLoading}>
+                        <Button type="submit" className="w-full bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-500/90 shadow-lg" disabled={isLoading}>
                             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Đăng nhập
                         </Button>
                     </form>
 
-                    <div className="mt-4 text-center text-sm">
+                    <div className="mt-6 text-center text-sm">
                         Chưa có tài khoản?{" "}
-                        <Link href="/dang-ky" className="text-primary underline hover:no-underline">
+                        <Link href="/dang-ky" className="text-primary font-medium hover:underline">
                             Đăng ký ngay
                         </Link>
                     </div>
@@ -205,27 +205,27 @@ const benefits = [
 
 export default function LoginPage() {
     return (
-        <div className="py-8 md:py-12">
+        <div className="py-8 md:py-16">
             <div className="container">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                     {/* Left side - Benefits */}
-                    <div className="order-2 lg:order-1">
+                    <div className="order-2 lg:order-1 animate-fade-in">
                         <div className="max-w-lg">
-                            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                                 Chào mừng bạn trở lại!
                             </h1>
                             <p className="text-muted-foreground text-lg mb-8">
                                 Đăng nhập để trải nghiệm đầy đủ các tính năng và ưu đãi dành riêng cho thành viên.
                             </p>
 
-                            <div className="space-y-6">
-                                {benefits.map((benefit) => (
-                                    <div key={benefit.title} className="flex gap-4">
-                                        <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <div className="space-y-5">
+                                {benefits.map((benefit, index) => (
+                                    <div key={benefit.title} className={`flex gap-4 animate-fade-in-up delay-${(index + 1) * 100}`}>
+                                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-cyan-500/20 flex items-center justify-center shadow-sm">
                                             <benefit.icon className="h-6 w-6 text-primary" />
                                         </div>
                                         <div>
-                                            <h3 className="font-semibold mb-1">{benefit.title}</h3>
+                                            <h3 className="font-semibold mb-1 text-foreground">{benefit.title}</h3>
                                             <p className="text-sm text-muted-foreground">{benefit.description}</p>
                                         </div>
                                     </div>
@@ -235,8 +235,8 @@ export default function LoginPage() {
                     </div>
 
                     {/* Right side - Login Form */}
-                    <div className="order-1 lg:order-2 flex justify-center">
-                        <Suspense fallback={<div className="w-full max-w-md h-96 bg-muted animate-pulse rounded-lg" />}>
+                    <div className="order-1 lg:order-2 flex justify-center animate-scale-in">
+                        <Suspense fallback={<div className="w-full max-w-md h-96 bg-muted animate-pulse rounded-xl" />}>
                             <LoginForm />
                         </Suspense>
                     </div>

@@ -113,21 +113,21 @@ export default function AccountPage() {
     ];
 
     return (
-        <main className="min-h-screen bg-slate-50 py-8">
+        <main className="min-h-screen bg-secondary/30 py-8 md:py-12">
             <div className="container mx-auto px-4">
-                <h1 className="text-2xl font-bold mb-6">Tài khoản của tôi</h1>
+                <h1 className="text-2xl font-bold mb-6 text-foreground animate-fade-in">Tài khoản của tôi</h1>
 
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Sidebar */}
                     <aside className="w-full lg:w-64 flex-shrink-0">
-                        <div className="bg-white rounded-lg border p-4">
+                        <div className="bg-card rounded-xl border border-border/50 p-4 shadow-sm">
                             {/* User Avatar */}
-                            <div className="flex items-center gap-3 mb-6 pb-4 border-b">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white font-bold text-lg">
+                            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border/50">
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-500 flex items-center justify-center text-white font-bold text-lg shadow-md">
                                     {user.fullName.charAt(0)}
                                 </div>
                                 <div>
-                                    <p className="font-semibold">{user.fullName}</p>
+                                    <p className="font-semibold text-foreground">{user.fullName}</p>
                                     <p className="text-sm text-muted-foreground">{user.email}</p>
                                 </div>
                             </div>
@@ -138,21 +138,21 @@ export default function AccountPage() {
                                     <button
                                         key={item.key}
                                         onClick={() => setActiveTab(item.key as typeof activeTab)}
-                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${activeTab === item.key
-                                                ? "bg-primary text-primary-foreground"
-                                                : "hover:bg-slate-100"
+                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === item.key
+                                            ? "bg-gradient-to-r from-primary to-cyan-500 text-white shadow-md"
+                                            : "hover:bg-secondary text-foreground"
                                             }`}
                                     >
                                         <item.icon className="h-5 w-5" />
                                         <span>{item.label}</span>
                                     </button>
                                 ))}
-                                <hr className="my-2" />
-                                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-100 text-muted-foreground">
+                                <hr className="my-2 border-border/50" />
+                                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-secondary text-muted-foreground transition-colors">
                                     <Settings className="h-5 w-5" />
                                     <span>Cài đặt</span>
                                 </button>
-                                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-50 text-red-600">
+                                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 text-red-600 transition-colors">
                                     <LogOut className="h-5 w-5" />
                                     <span>Đăng xuất</span>
                                 </button>
@@ -164,10 +164,10 @@ export default function AccountPage() {
                     <div className="flex-1">
                         {/* Profile Tab */}
                         {activeTab === "profile" && (
-                            <div className="bg-white rounded-lg border p-6">
+                            <div className="bg-card rounded-xl border border-border/50 p-6 shadow-sm">
                                 <div className="flex items-center justify-between mb-6">
-                                    <h2 className="text-xl font-bold">Thông tin cá nhân</h2>
-                                    <Button variant="outline" size="sm">
+                                    <h2 className="text-xl font-bold text-foreground">Thông tin cá nhân</h2>
+                                    <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:bg-primary hover:text-white">
                                         <Edit className="h-4 w-4 mr-2" />
                                         Chỉnh sửa
                                     </Button>
@@ -175,55 +175,55 @@ export default function AccountPage() {
 
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-4">
-                                        <div>
+                                        <div className="p-4 rounded-xl bg-secondary/50">
                                             <label className="text-sm text-muted-foreground">Họ và tên</label>
-                                            <p className="font-medium flex items-center gap-2">
-                                                <User className="h-4 w-4 text-muted-foreground" />
+                                            <p className="font-medium flex items-center gap-2 mt-1 text-foreground">
+                                                <User className="h-4 w-4 text-primary" />
                                                 {user.fullName}
                                             </p>
                                         </div>
-                                        <div>
+                                        <div className="p-4 rounded-xl bg-secondary/50">
                                             <label className="text-sm text-muted-foreground">Email</label>
-                                            <p className="font-medium flex items-center gap-2">
-                                                <Mail className="h-4 w-4 text-muted-foreground" />
+                                            <p className="font-medium flex items-center gap-2 mt-1 text-foreground">
+                                                <Mail className="h-4 w-4 text-primary" />
                                                 {user.email}
                                             </p>
                                         </div>
-                                        <div>
+                                        <div className="p-4 rounded-xl bg-secondary/50">
                                             <label className="text-sm text-muted-foreground">Số điện thoại</label>
-                                            <p className="font-medium flex items-center gap-2">
-                                                <Phone className="h-4 w-4 text-muted-foreground" />
+                                            <p className="font-medium flex items-center gap-2 mt-1 text-foreground">
+                                                <Phone className="h-4 w-4 text-primary" />
                                                 {user.phone}
                                             </p>
                                         </div>
                                     </div>
 
                                     <div className="space-y-4">
-                                        <div>
+                                        <div className="p-4 rounded-xl bg-secondary/50">
                                             <label className="text-sm text-muted-foreground">Ngày tham gia</label>
-                                            <p className="font-medium flex items-center gap-2">
-                                                <Clock className="h-4 w-4 text-muted-foreground" />
+                                            <p className="font-medium flex items-center gap-2 mt-1 text-foreground">
+                                                <Clock className="h-4 w-4 text-primary" />
                                                 {formatDate(user.createdAt)}
                                             </p>
                                         </div>
-                                        <div>
+                                        <div className="p-4 rounded-xl bg-secondary/50">
                                             <label className="text-sm text-muted-foreground">Địa chỉ mặc định</label>
-                                            <p className="font-medium flex items-center gap-2">
-                                                <MapPin className="h-4 w-4 text-muted-foreground" />
+                                            <p className="font-medium flex items-center gap-2 mt-1 text-foreground">
+                                                <MapPin className="h-4 w-4 text-primary" />
                                                 Chưa cập nhật
                                             </p>
-                                            <Button variant="link" className="p-0 h-auto text-sm">
+                                            <Button variant="link" className="p-0 h-auto text-sm text-primary">
                                                 Thêm địa chỉ
                                             </Button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <hr className="my-6" />
+                                <hr className="my-6 border-border/50" />
 
                                 <div>
-                                    <h3 className="font-semibold mb-4">Bảo mật</h3>
-                                    <Button variant="outline">Đổi mật khẩu</Button>
+                                    <h3 className="font-semibold mb-4 text-foreground">Bảo mật</h3>
+                                    <Button variant="outline" className="border-primary/50">Đổi mật khẩu</Button>
                                 </div>
                             </div>
                         )}
@@ -231,14 +231,16 @@ export default function AccountPage() {
                         {/* Orders Tab */}
                         {activeTab === "orders" && (
                             <div className="space-y-4">
-                                <div className="bg-white rounded-lg border p-6">
-                                    <h2 className="text-xl font-bold mb-6">Đơn hàng của tôi</h2>
+                                <div className="bg-card rounded-xl border border-border/50 p-6 shadow-sm">
+                                    <h2 className="text-xl font-bold mb-6 text-foreground">Đơn hàng của tôi</h2>
 
                                     {orders.length === 0 ? (
                                         <div className="text-center py-12">
-                                            <Package className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+                                            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-secondary flex items-center justify-center">
+                                                <Package className="h-10 w-10 text-muted-foreground" />
+                                            </div>
                                             <p className="text-muted-foreground">Bạn chưa có đơn hàng nào</p>
-                                            <Button className="mt-4" asChild>
+                                            <Button className="mt-4 bg-gradient-to-r from-primary to-cyan-500" asChild>
                                                 <Link href="/san-pham">Mua sắm ngay</Link>
                                             </Button>
                                         </div>
@@ -247,11 +249,11 @@ export default function AccountPage() {
                                             {orders.map((order) => (
                                                 <div
                                                     key={order.id}
-                                                    className="border rounded-lg p-4 hover:shadow transition"
+                                                    className="border border-border/50 rounded-xl p-4 hover:shadow-md transition-shadow"
                                                 >
                                                     <div className="flex items-center justify-between mb-3">
                                                         <div>
-                                                            <p className="font-semibold">{order.id}</p>
+                                                            <p className="font-semibold text-foreground">{order.id}</p>
                                                             <p className="text-sm text-muted-foreground">
                                                                 {formatDate(order.createdAt)}
                                                             </p>
@@ -265,10 +267,10 @@ export default function AccountPage() {
                                                             {order.itemCount} sản phẩm
                                                         </p>
                                                         <div className="flex items-center gap-4">
-                                                            <p className="font-bold text-lg">
+                                                            <p className="font-bold text-lg text-primary">
                                                                 {formatPrice(order.totalAmount)}
                                                             </p>
-                                                            <Button variant="outline" size="sm" asChild>
+                                                            <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:bg-primary hover:text-white" asChild>
                                                                 <Link href={`/tai-khoan/don-hang/${order.id}`}>
                                                                     Chi tiết
                                                                     <ChevronRight className="h-4 w-4 ml-1" />
@@ -286,14 +288,16 @@ export default function AccountPage() {
 
                         {/* Wishlist Tab */}
                         {activeTab === "wishlist" && (
-                            <div className="bg-white rounded-lg border p-6">
-                                <h2 className="text-xl font-bold mb-6">Sản phẩm yêu thích</h2>
+                            <div className="bg-card rounded-xl border border-border/50 p-6 shadow-sm">
+                                <h2 className="text-xl font-bold mb-6 text-foreground">Sản phẩm yêu thích</h2>
 
                                 {wishlist.length === 0 ? (
                                     <div className="text-center py-12">
-                                        <Heart className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+                                        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-pink-100 to-rose-100 flex items-center justify-center">
+                                            <Heart className="h-10 w-10 text-rose-400" />
+                                        </div>
                                         <p className="text-muted-foreground">Chưa có sản phẩm yêu thích</p>
-                                        <Button className="mt-4" asChild>
+                                        <Button className="mt-4 bg-gradient-to-r from-primary to-cyan-500" asChild>
                                             <Link href="/san-pham">Khám phá sản phẩm</Link>
                                         </Button>
                                     </div>
@@ -302,34 +306,34 @@ export default function AccountPage() {
                                         {wishlist.map((product) => (
                                             <div
                                                 key={product.id}
-                                                className="border rounded-lg p-4 group"
+                                                className="border border-border/50 rounded-xl p-4 group hover:shadow-md transition-shadow"
                                             >
                                                 <Link href={`/san-pham/${product.slug}`}>
-                                                    <div className="aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 mb-3 group-hover:scale-105 transition" />
-                                                    <h3 className="font-semibold text-sm mb-2 line-clamp-2 group-hover:text-primary transition">
+                                                    <div className="aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-secondary to-muted mb-3 group-hover:scale-105 transition-transform" />
+                                                    <h3 className="font-semibold text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                                                         {product.name}
                                                     </h3>
                                                 </Link>
                                                 <div className="flex items-baseline gap-2 mb-3">
                                                     {product.price < product.originalPrice ? (
                                                         <>
-                                                            <span className="text-red-500 font-bold">
+                                                            <span className="text-rose-500 font-bold">
                                                                 {formatPrice(product.price)}
                                                             </span>
-                                                            <span className="text-slate-400 text-xs line-through">
+                                                            <span className="text-muted-foreground text-xs line-through">
                                                                 {formatPrice(product.originalPrice)}
                                                             </span>
                                                         </>
                                                     ) : (
-                                                        <span className="font-bold">{formatPrice(product.price)}</span>
+                                                        <span className="font-bold text-foreground">{formatPrice(product.price)}</span>
                                                     )}
                                                 </div>
                                                 <div className="flex gap-2">
-                                                    <Button size="sm" className="flex-1">
+                                                    <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-500/90">
                                                         Thêm giỏ
                                                     </Button>
-                                                    <Button size="sm" variant="outline">
-                                                        <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+                                                    <Button size="sm" variant="outline" className="border-rose-200">
+                                                        <Heart className="h-4 w-4 text-rose-500 fill-rose-500" />
                                                     </Button>
                                                 </div>
                                             </div>

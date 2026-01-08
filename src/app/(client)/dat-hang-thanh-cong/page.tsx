@@ -60,25 +60,30 @@ function OrderSuccessContent() {
         <div className="py-16">
             <div className="container mx-auto px-4 max-w-2xl">
                 {/* Success Header */}
-                <div className="text-center mb-8">
-                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <CheckCircle className="h-10 w-10 text-green-600" />
+                <div className="text-center mb-10 animate-fade-in">
+                    <div className="w-24 h-24 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-scale-in">
+                        <CheckCircle className="h-12 w-12 text-accent" />
                     </div>
-                    <h1 className="text-3xl font-bold mb-2">Đặt hàng thành công!</h1>
-                    <p className="text-muted-foreground">
+                    <h1 className="text-3xl font-bold mb-3 text-foreground">Đặt hàng thành công!</h1>
+                    <p className="text-muted-foreground text-lg">
                         Cảm ơn bạn đã tin tưởng và mua hàng tại HealthNews
                     </p>
                 </div>
 
                 {/* Order Number */}
-                <Card className="mb-6">
+                <Card className="mb-6 border border-border/50 shadow-md">
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm text-muted-foreground">Mã đơn hàng</p>
-                                <p className="text-2xl font-bold font-mono">{orderId}</p>
+                                <p className="text-2xl font-bold font-mono text-primary">{orderId}</p>
                             </div>
-                            <Button variant="outline" size="sm" onClick={copyOrderNumber}>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={copyOrderNumber}
+                                className="border-primary/50 text-primary hover:bg-primary hover:text-white"
+                            >
                                 {copied ? (
                                     <>
                                         <Check className="h-4 w-4 mr-2" />
@@ -96,12 +101,14 @@ function OrderSuccessContent() {
                 </Card>
 
                 {/* Order Info */}
-                <Card className="mb-6">
+                <Card className="mb-6 border border-border/50 shadow-md">
                     <CardContent className="p-6 space-y-4">
                         {/* Shipping */}
                         <div>
-                            <h3 className="font-semibold mb-2 flex items-center gap-2">
-                                <Package className="h-4 w-4" />
+                            <h3 className="font-semibold mb-3 flex items-center gap-2">
+                                <span className="p-1.5 rounded-lg bg-primary/10">
+                                    <Package className="h-4 w-4 text-primary" />
+                                </span>
                                 Thông tin giao hàng
                             </h3>
                             <div className="text-sm space-y-1 text-muted-foreground">
@@ -109,12 +116,12 @@ function OrderSuccessContent() {
                                 <p>{orderData.shippingPhone}</p>
                                 <p>{orderData.shippingAddress}</p>
                             </div>
-                            <div className="mt-3 p-3 bg-blue-50 text-blue-700 rounded-lg text-sm">
+                            <div className="mt-3 p-3 bg-gradient-to-r from-primary/10 to-cyan-500/10 text-primary rounded-xl text-sm border border-primary/20">
                                 ⏱️ Thời gian giao hàng dự kiến: <strong>{orderData.estimatedDelivery}</strong>
                             </div>
                         </div>
 
-                        <Separator />
+                        <Separator className="bg-border/50" />
 
                         {/* Items */}
                         <div>
@@ -136,7 +143,7 @@ function OrderSuccessContent() {
                             </div>
                         </div>
 
-                        <Separator />
+                        <Separator className="bg-border/50" />
 
                         {/* Payment */}
                         <div className="flex justify-between">
@@ -148,7 +155,7 @@ function OrderSuccessContent() {
                             </span>
                         </div>
 
-                        <div className="flex justify-between text-lg font-bold">
+                        <div className="flex justify-between text-lg font-bold pt-2">
                             <span>Tổng cộng</span>
                             <span className="text-primary">{formatPrice(orderData.totalAmount)}</span>
                         </div>
@@ -158,12 +165,12 @@ function OrderSuccessContent() {
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row gap-4">
                     <Link href="/" className="flex-1">
-                        <Button variant="outline" className="w-full">
+                        <Button variant="outline" className="w-full border-border/50 hover:bg-secondary/50">
                             Về trang chủ
                         </Button>
                     </Link>
                     <Link href="/san-pham" className="flex-1">
-                        <Button className="w-full">
+                        <Button className="w-full bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-500/90 shadow-lg">
                             Tiếp tục mua sắm
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
@@ -171,10 +178,10 @@ function OrderSuccessContent() {
                 </div>
 
                 {/* Additional Info */}
-                <p className="text-center text-sm text-muted-foreground mt-8">
+                <p className="text-center text-sm text-muted-foreground mt-10">
                     Một email xác nhận đã được gửi đến địa chỉ của bạn.
                     <br />
-                    Nếu có thắc mắc, vui lòng liên hệ hotline: <strong>1900 1234</strong>
+                    Nếu có thắc mắc, vui lòng liên hệ hotline: <strong className="text-primary">1900 1234</strong>
                 </p>
             </div>
         </div>

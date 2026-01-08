@@ -76,9 +76,10 @@ export function FeaturedArticlesCarousel({
     return (
         <div className="relative">
             {/* Header */}
-            <div className="flex items-center gap-4 mb-6">
-                <h2 className="text-xl font-bold uppercase border-b-4 border-red-500 pb-2">
-                    {title}
+            <div className="flex items-center gap-4 mb-8">
+                <h2 className="text-xl font-bold uppercase tracking-wide relative">
+                    <span className="relative z-10">{title}</span>
+                    <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full"></span>
                 </h2>
             </div>
 
@@ -88,20 +89,20 @@ export function FeaturedArticlesCarousel({
                 <Button
                     variant="outline"
                     size="icon"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition hidden md:flex"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-white hover:bg-white shadow-xl border-0 opacity-0 group-hover:opacity-100 transition-all hidden md:flex hover:scale-110"
                     onClick={scrollPrev}
                     disabled={prevBtnDisabled}
                 >
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-5 w-5" />
                 </Button>
                 <Button
                     variant="outline"
                     size="icon"
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition hidden md:flex"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-white hover:bg-white shadow-xl border-0 opacity-0 group-hover:opacity-100 transition-all hidden md:flex hover:scale-110"
                     onClick={scrollNext}
                     disabled={nextBtnDisabled}
                 >
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-5 w-5" />
                 </Button>
 
                 {/* Slides */}
@@ -114,18 +115,18 @@ export function FeaturedArticlesCarousel({
                             >
                                 <Link href={`/bai-viet/${article.slug}`}>
                                     <div className="group/card">
-                                        <div className="aspect-[16/9] rounded-lg overflow-hidden mb-3">
+                                        <div className="aspect-[16/9] rounded-xl overflow-hidden mb-3 shadow-md">
                                             {article.featuredImage ? (
                                                 <img
                                                     src={article.featuredImage}
                                                     alt={article.title}
-                                                    className="w-full h-full object-cover group-hover/card:scale-[1.02] transition duration-300"
+                                                    className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
                                                 />
                                             ) : (
-                                                <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 group-hover/card:scale-[1.02] transition duration-300" />
+                                                <div className="w-full h-full bg-gradient-to-br from-secondary to-muted group-hover/card:scale-105 transition-transform duration-500" />
                                             )}
                                         </div>
-                                        <h4 className="font-semibold line-clamp-2 text-base group-hover/card:text-primary transition">
+                                        <h4 className="font-semibold line-clamp-2 text-base group-hover/card:text-primary transition-colors">
                                             {article.title}
                                         </h4>
                                     </div>
@@ -143,8 +144,8 @@ export function FeaturedArticlesCarousel({
                         key={index}
                         onClick={() => scrollTo(index)}
                         className={`w-2.5 h-2.5 rounded-full transition-all ${index === selectedIndex
-                                ? "bg-primary w-6"
-                                : "bg-slate-300 hover:bg-slate-400"
+                            ? "bg-primary w-6"
+                            : "bg-slate-300 hover:bg-slate-400"
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />

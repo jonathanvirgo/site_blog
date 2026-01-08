@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, ReactNode } from "react";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -27,6 +27,7 @@ interface ProductCarouselProps {
     title: string;
     viewAllLink?: string;
     autoplayDelay?: number;
+    icon?: ReactNode;
 }
 
 function formatPrice(price: number) {
@@ -38,6 +39,7 @@ export function ProductCarousel({
     title,
     viewAllLink = "/san-pham",
     autoplayDelay = 4000,
+    icon,
 }: ProductCarouselProps) {
     const [emblaRef, emblaApi] = useEmblaCarousel(
         {
@@ -90,15 +92,17 @@ export function ProductCarousel({
     return (
         <div className="relative">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
-                    {title}
+            <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl font-bold flex items-center gap-3">
+                    {icon && <span className="p-2 rounded-xl bg-primary/10">{icon}</span>}
+                    <span>{title}</span>
                 </h2>
                 <Link
                     href={viewAllLink}
-                    className="text-primary font-medium hover:underline flex items-center gap-1"
+                    className="text-primary font-medium hover:underline flex items-center gap-1 group"
                 >
-                    Xem tất cả <ChevronRight className="h-4 w-4" />
+                    Xem tất cả
+                    <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
             </div>
 
@@ -108,20 +112,20 @@ export function ProductCarousel({
                 <Button
                     variant="outline"
                     size="icon"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition hidden md:flex"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 bg-white hover:bg-white shadow-xl border-0 opacity-0 group-hover:opacity-100 transition-all hidden md:flex hover:scale-110"
                     onClick={scrollPrev}
                     disabled={prevBtnDisabled}
                 >
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-5 w-5" />
                 </Button>
                 <Button
                     variant="outline"
                     size="icon"
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-white/90 hover:bg-white shadow-lg opacity-0 group-hover:opacity-100 transition hidden md:flex"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 bg-white hover:bg-white shadow-xl border-0 opacity-0 group-hover:opacity-100 transition-all hidden md:flex hover:scale-110"
                     onClick={scrollNext}
                     disabled={nextBtnDisabled}
                 >
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-5 w-5" />
                 </Button>
 
                 {/* Slides */}
@@ -139,21 +143,23 @@ export function ProductCarousel({
                                     className="flex-[0_0_50%] sm:flex-[0_0_33.333%] lg:flex-[0_0_20%] pl-4"
                                 >
                                     <Link href={`/san-pham/${product.slug}`}>
-                                        <div className="bg-white rounded-lg p-4 border hover:shadow-lg hover:-translate-y-1 transition-all group/card h-full flex flex-col">
+                                        <div className="bg-card rounded-xl p-4 border border-border/50 card-interactive h-full flex flex-col">
                                             {salePrice && (
-                                                <Badge className="mb-2 bg-red-500 w-fit">
+                                                <Badge className="mb-2 badge-sale w-fit">
                                                     -{Math.round((1 - salePrice / price) * 100)}%
                                                 </Badge>
                                             )}
-                                            <div className="aspect-square rounded overflow-hidden mb-4">
+                                            <div className="aspect-square rounded-lg overflow-hidden mb-4 bg-secondary/30">
                                                 {images[0] ? (
                                                     <img
                                                         src={images[0] as string}
                                                         alt={product.name}
-                                                        className="w-full h-full object-cover group-hover/card:scale-105 transition"
+                                                        className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 group-hover/card:scale-105 transition" />
+                                                    <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                                                        <ShoppingCart className="h-8 w-8 text-muted-foreground" />
+                                                    </div>
                                                 )}
                                             </div>
                                             <h3 className="font-semibold text-sm line-clamp-2 mb-2 min-h-[2.5rem] flex-grow">
@@ -165,15 +171,15 @@ export function ProductCarousel({
                                                         <span className="text-red-500 font-bold">
                                                             {formatPrice(salePrice)}
                                                         </span>
-                                                        <span className="text-slate-400 text-sm line-through">
+                                                        <span className="text-muted-foreground text-xs line-through">
                                                             {formatPrice(price)}
                                                         </span>
                                                     </>
                                                 ) : (
-                                                    <span className="font-bold">{formatPrice(price)}</span>
+                                                    <span className="font-bold text-foreground">{formatPrice(price)}</span>
                                                 )}
                                             </div>
-                                            <Button size="sm" className="w-full">
+                                            <Button size="sm" className="w-full bg-primary hover:bg-primary/90 shadow-sm">
                                                 <ShoppingCart className="h-4 w-4 mr-2" />
                                                 Thêm giỏ
                                             </Button>
@@ -193,8 +199,8 @@ export function ProductCarousel({
                         key={index}
                         onClick={() => scrollTo(index)}
                         className={`w-2.5 h-2.5 rounded-full transition-all ${index === selectedIndex
-                                ? "bg-primary w-6"
-                                : "bg-slate-300 hover:bg-slate-400"
+                            ? "bg-primary w-6"
+                            : "bg-slate-300 hover:bg-slate-400"
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />
