@@ -236,7 +236,7 @@ export default async function CategoryPage({ params }: PageProps) {
     return (
         <>
             {/* SECTION 1: Featured Content Grid */}
-            <section className="py-8">
+            <section className="py-6 lg:py-10">
                 <div className="container mx-auto px-4">
                     {/* Breadcrumb */}
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
@@ -387,7 +387,7 @@ export default async function CategoryPage({ params }: PageProps) {
             </section>
 
             {/* SECTION 2: Main Feed (2-Column Layout) */}
-            <section className="py-12 border-t">
+            <section className="py-10 lg:py-14 bg-muted/20">
                 <div className="container mx-auto px-4">
                     <div className={`grid ${hasSubcategories ? 'lg:grid-cols-2' : ''} gap-8`}>
                         {/* Left: Bài viết mới nhất */}

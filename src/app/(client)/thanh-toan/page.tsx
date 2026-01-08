@@ -280,7 +280,7 @@ export default function CheckoutPage() {
 
     if (loading) {
         return (
-            <div className="py-16 flex items-center justify-center">
+            <div className="py-12 lg:py-16 flex items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
         );
@@ -291,7 +291,7 @@ export default function CheckoutPage() {
     }
 
     return (
-        <div className="py-8">
+        <div className="py-6 lg:py-10">
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-8">

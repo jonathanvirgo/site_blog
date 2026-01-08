@@ -174,7 +174,7 @@ function SearchContent() {
             </section>
 
             {/* Main Content */}
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto px-4 py-6 lg:py-8">
                 {/* Loading State */}
                 {loading ? (
                     <div className="flex items-center justify-center py-16">

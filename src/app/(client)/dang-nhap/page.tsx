@@ -205,7 +205,7 @@ const benefits = [
 
 export default function LoginPage() {
     return (
-        <div className="py-8 md:py-12">
+        <div className="py-8 md:py-12 lg:py-16">
             <div className="container">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                     {/* Left side - Benefits */}

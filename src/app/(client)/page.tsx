@@ -92,7 +92,7 @@ export default async function HomePage() {
     return (
         <>
             {/* SECTION 1: Featured Content Grid */}
-            <section className="py-8">
+            <section className="py-6 lg:py-10">
                 <div className="container mx-auto px-4">
                     <div className="grid lg:grid-cols-12 gap-6">
                         {/* Main Content - 8 cols */}
@@ -227,14 +227,14 @@ export default async function HomePage() {
             </section>
 
             {/* SECTION 2: Featured Articles Carousel */}
-            <section className="py-8 border-t">
+            <section className="py-10 lg:py-14 bg-muted/30">
                 <div className="container mx-auto px-4">
                     <FeaturedArticlesCarousel articles={displayFeaturedArticles} />
                 </div>
             </section>
 
             {/* SECTION 3: Product Carousel */}
-            <section className="py-12 bg-slate-50">
+            <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
                 <div className="container mx-auto px-4">
                     <ProductCarousel
                         products={featuredProducts}
@@ -245,7 +245,7 @@ export default async function HomePage() {
             </section>
 
             {/* SECTION 4: Category Images Grid */}
-            <section className="py-12">
+            <section className="py-12 lg:py-16">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-3 gap-6">
                         {/* Column 1 */}
@@ -344,7 +344,7 @@ export default async function HomePage() {
             </section>
 
             {/* SECTION 5: Main Feed (2-Column) */}
-            <section className="py-12 border-t">
+            <section className="py-12 lg:py-16 bg-muted/20">
                 <div className="container mx-auto px-4">
                     <div className="grid lg:grid-cols-2 gap-8">
                         {/* Left: Latest Articles with Infinite Scroll */}

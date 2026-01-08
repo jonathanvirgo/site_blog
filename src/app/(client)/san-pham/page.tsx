@@ -234,7 +234,7 @@ export default function ShopPage() {
     };
 
     return (
-        <div className="py-8">
+        <div className="py-6 lg:py-10">
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="mb-8">

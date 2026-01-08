@@ -113,7 +113,7 @@ export default function AccountPage() {
     ];
 
     return (
-        <main className="min-h-screen bg-slate-50 py-8">
+        <main className="min-h-screen bg-slate-50 py-6 lg:py-10">
             <div className="container mx-auto px-4">
                 <h1 className="text-2xl font-bold mb-6">Tài khoản của tôi</h1>
 
@@ -139,8 +139,8 @@ export default function AccountPage() {
                                         key={item.key}
                                         onClick={() => setActiveTab(item.key as typeof activeTab)}
                                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${activeTab === item.key
-                                                ? "bg-primary text-primary-foreground"
-                                                : "hover:bg-slate-100"
+                                            ? "bg-primary text-primary-foreground"
+                                            : "hover:bg-slate-100"
                                             }`}
                                     >
                                         <item.icon className="h-5 w-5" />

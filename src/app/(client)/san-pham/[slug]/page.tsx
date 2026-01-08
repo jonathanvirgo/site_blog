@@ -205,7 +205,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
-            <div className="py-8">
+            <div className="py-6 lg:py-10">
                 <div className="container mx-auto px-4">
                     {/* Breadcrumb */}
                     <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6" aria-label="Breadcrumb">

@@ -222,7 +222,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
     };
 
     return (
-        <article className="py-8">
+        <article className="py-6 lg:py-10">
             <div className="container mx-auto px-4">
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
@@ -442,10 +442,10 @@ export default async function ArticleDetailPage({ params }: PageProps) {
             </div>
 
             {/* Full Width Sections */}
-            <div className="mt-12">
+            <div className="mt-8 lg:mt-12">
                 {/* Section: Tin cùng chuyên mục */}
                 {sameCategoryArticles.length > 0 && (
-                    <section className="py-10 bg-[#F8FAFC]">
+                    <section className="py-8 lg:py-12 bg-muted/30">
                         <div className="container mx-auto px-4">
                             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                                 <span>📂</span>
@@ -493,7 +493,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
                 {/* Section: Đáng chú ý (Masonry) */}
                 {notableArticles.length > 0 && (
-                    <section className="py-10 bg-[#FFF7ED]">
+                    <section className="py-8 lg:py-12 bg-orange-50/50">
                         <div className="container mx-auto px-4">
                             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                                 <span>⭐</span>
@@ -561,7 +561,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
                 {/* Section: Dành riêng cho bạn */}
                 {personalizedArticles.length > 0 && (
-                    <section className="py-10 bg-[#F0FDF4]">
+                    <section className="py-8 lg:py-12 bg-green-50/50">
                         <div className="container mx-auto px-4">
                             <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
                                 <span>💡</span>
@@ -604,7 +604,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
                 )}
 
                 {/* Section: Đừng bỏ lỡ (Infinite Scroll) */}
-                <section className="py-10">
+                <section className="py-8 lg:py-12">
                     <div className="container mx-auto px-4">
                         <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                             <span>🚀</span>

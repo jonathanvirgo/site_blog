@@ -121,7 +121,7 @@ export default function CartPage() {
 
     if (loading) {
         return (
-            <div className="py-16 flex items-center justify-center">
+            <div className="py-12 lg:py-16 flex items-center justify-center">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
         );
@@ -129,7 +129,7 @@ export default function CartPage() {
 
     if (cartItems.length === 0) {
         return (
-            <div className="py-16">
+            <div className="py-12 lg:py-16">
                 <div className="container mx-auto px-4 text-center">
                     <ShoppingBag className="h-24 w-24 mx-auto text-muted-foreground mb-6" />
                     <h1 className="text-2xl font-bold mb-4">Giỏ hàng trống</h1>
@@ -148,7 +148,7 @@ export default function CartPage() {
     }
 
     return (
-        <div className="py-8">
+        <div className="py-6 lg:py-10">
             <div className="container mx-auto px-4">
                 <h1 className="text-3xl font-bold mb-8">Giỏ hàng ({cartItems.length})</h1>
 
